@@ -1,0 +1,6 @@
+{
+	"name": "IR-sakila",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

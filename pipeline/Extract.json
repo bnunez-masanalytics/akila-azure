@@ -1,0 +1,147 @@
+{
+	"name": "Extract",
+	"properties": {
+		"activities": [
+			{
+				"name": "copy actor table",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "odbc_sakila",
+						"type": "DatasetReference",
+						"parameters": {
+							"Table": "actor"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "RawDataCSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"Tabla": "actor",
+							"idFecha": {
+								"value": "@pipeline().parameters.idFecha",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "copy address table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "copy actor table",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "odbc_sakila",
+						"type": "DatasetReference",
+						"parameters": {
+							"Table": "address"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "RawDataCSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"Tabla": "address",
+							"idFecha": {
+								"value": "@pipeline().parameters.idFecha",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"idFecha": {
+				"type": "string",
+				"defaultValue": "20250320"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-03-20T19:26:51Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

@@ -1,0 +1,39 @@
+{
+	"name": "RawDataCSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "asa-demo-analytics-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Tabla": {
+				"type": "string"
+			},
+			"idFecha": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat(dataset().idFecha, '.csv')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('raw-data/', dataset().Tabla)",
+					"type": "Expression"
+				},
+				"fileSystem": "files-demo-analytics"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
