@@ -1,0 +1,101 @@
+{
+	"name": "Transform",
+	"properties": {
+		"activities": [
+			{
+				"name": "process actor table",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Dataflow1",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"Tabla": "actor",
+								"idFecha": {
+									"value": "@pipeline().parameters.idFecha",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"Tabla": "actor",
+								"idFecha": {
+									"value": "@pipeline().parameters.idFecha",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "process address table",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "process actor table",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Dataflow2",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"Tabla": "address",
+								"idFecha": {
+									"value": "@pipeline().parameters.idFecha",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"Tabla": "address",
+								"idFecha": {
+									"value": "@pipeline().parameters.idFecha",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"idFecha": {
+				"type": "string",
+				"defaultValue": "20230320"
+			}
+		},
+		"annotations": []
+	}
+}

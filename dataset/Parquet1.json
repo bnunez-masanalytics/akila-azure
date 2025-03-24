@@ -5,11 +5,27 @@
 			"referenceName": "asa-demo-analytics-WorkspaceDefaultStorage",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"Tabla": {
+				"type": "string"
+			},
+			"idFecha": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat(dataset().Tabla, '.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('silver-data/', dataset().Tabla)",
+					"type": "Expression"
+				},
 				"fileSystem": "files-demo-analytics"
 			},
 			"compressionCodec": "snappy"
