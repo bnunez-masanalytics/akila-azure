@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "process actor table",
+				"name": "transform actor table",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -43,11 +43,11 @@
 				}
 			},
 			{
-				"name": "process address table",
+				"name": "transform address table",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "process actor table",
+						"activity": "transform actor table",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -81,6 +81,37 @@
 								}
 							}
 						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "transform category table",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "transform address table",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Dataflow3",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
