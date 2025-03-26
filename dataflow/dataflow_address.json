@@ -1,5 +1,5 @@
 {
-	"name": "Dataflow2",
+	"name": "dataflow_address",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,7 +9,7 @@
 						"referenceName": "RawDataCSV",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "SourceAddress"
 				}
 			],
 			"sinks": [
@@ -18,7 +18,7 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "OutputAddress"
 				}
 			],
 			"transformations": [
@@ -43,8 +43,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 select(mapColumn(",
+				"     ignoreNoFilesFound: false) ~> SourceAddress",
+				"SourceAddress select(mapColumn(",
 				"          address_id,",
 				"          address,",
 				"          district,",
@@ -60,8 +60,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> OutputAddress"
 			]
 		}
 	}
