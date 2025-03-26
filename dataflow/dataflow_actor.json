@@ -1,5 +1,5 @@
 {
-	"name": "Dataflow1",
+	"name": "dataflow_actor",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,7 +9,7 @@
 						"referenceName": "RawDataCSV",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "SourceActor"
 				}
 			],
 			"sinks": [
@@ -18,7 +18,7 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "OutputActor"
 				}
 			],
 			"transformations": [
@@ -26,7 +26,7 @@
 					"name": "select1"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "derivedColumn"
 				},
 				{
 					"name": "select2"
@@ -41,16 +41,16 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 select(mapColumn(",
+				"     ignoreNoFilesFound: false) ~> SourceActor",
+				"SourceActor select(mapColumn(",
 				"          actor_id,",
 				"          first_name,",
 				"          last_name",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 derive(name = first_name + \" \" + last_name) ~> derivedColumn1",
-				"derivedColumn1 select(mapColumn(",
+				"select1 derive(name = first_name + \" \" + last_name) ~> derivedColumn",
+				"derivedColumn select(mapColumn(",
 				"          actor_id,",
 				"          name",
 				"     ),",
@@ -65,7 +65,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1"
+				"     partitionBy('hash', 1)) ~> OutputActor"
 			]
 		}
 	}
