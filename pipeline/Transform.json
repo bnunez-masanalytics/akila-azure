@@ -16,17 +16,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dataflow1",
+						"referenceName": "dataflow_actor",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"source1": {
+							"SourceActor": {
 								"Tabla": "actor",
 								"idFecha": {
 									"value": "@pipeline().parameters.idFecha",
 									"type": "Expression"
 								}
 							},
-							"sink1": {
+							"OutputActor": {
 								"Tabla": "actor",
 								"idFecha": {
 									"value": "@pipeline().parameters.idFecha",
@@ -63,17 +63,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dataflow2",
+						"referenceName": "dataflow_address",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"source1": {
+							"SourceAddress": {
 								"Tabla": "address",
 								"idFecha": {
 									"value": "@pipeline().parameters.idFecha",
 									"type": "Expression"
 								}
 							},
-							"sink1": {
+							"OutputAddress": {
 								"Tabla": "address",
 								"idFecha": {
 									"value": "@pipeline().parameters.idFecha",
@@ -110,21 +110,96 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dataflow3",
+						"referenceName": "dataflow_category",
 						"type": "DataFlowReference",
 						"datasetParameters": {
-							"source1": {
+							"SourceCategory": {
 								"Tabla": "category",
 								"idFecha": {
 									"value": "@pipeline().parameters.idFecha",
 									"type": "Expression"
 								}
 							},
-							"sink1": {
+							"OutputCategory": {
 								"Tabla": "category",
 								"idFecha": "@pipeline().parameters.idFecha"
 							}
 						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "transform film table",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "transform category table",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow_film",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"SourceFilm": {
+								"Tabla": "film",
+								"idFecha": "@pipeline().parameters.idFecha"
+							},
+							"OutputFilm": {
+								"Tabla": "film",
+								"idFecha": {
+									"value": "@pipeline().parameters.idFecha",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "transform film_category table",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "transform film table",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow_film_category",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
