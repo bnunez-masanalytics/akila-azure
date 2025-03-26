@@ -111,7 +111,20 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Dataflow3",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"Tabla": "category",
+								"idFecha": {
+									"value": "@pipeline().parameters.idFecha",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"Tabla": "category",
+								"idFecha": "@pipeline().parameters.idFecha"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
