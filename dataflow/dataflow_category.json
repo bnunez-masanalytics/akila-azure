@@ -1,5 +1,5 @@
 {
-	"name": "Dataflow3",
+	"name": "dataflow_category",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,7 +9,7 @@
 						"referenceName": "RawDataCSV",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "SourceCategory"
 				}
 			],
 			"sinks": [
@@ -18,7 +18,7 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "OutputCategory"
 				}
 			],
 			"transformations": [
@@ -34,8 +34,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 select(mapColumn(",
+				"     ignoreNoFilesFound: false) ~> SourceCategory",
+				"SourceCategory select(mapColumn(",
 				"          category_id,",
 				"          name",
 				"     ),",
@@ -48,7 +48,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> OutputCategory"
 			]
 		}
 	}
