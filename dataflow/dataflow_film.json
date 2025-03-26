@@ -1,5 +1,5 @@
 {
-	"name": "dataflow_film_category",
+	"name": "dataflow_film",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,7 +9,7 @@
 						"referenceName": "RawDataCSV",
 						"type": "DatasetReference"
 					},
-					"name": "SourceFilmCategory"
+					"name": "SourceFilm"
 				}
 			],
 			"sinks": [
@@ -18,7 +18,7 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
-					"name": "OutputFilmCategory"
+					"name": "OutputFilm"
 				}
 			],
 			"transformations": [
@@ -29,15 +29,28 @@
 			"scriptLines": [
 				"source(output(",
 				"          film_id as short,",
-				"          category_id as short,",
+				"          title as string,",
+				"          description as string,",
+				"          release_year as short,",
+				"          language_id as boolean,",
+				"          original_language_id as string,",
+				"          rental_duration as short,",
+				"          rental_rate as double,",
+				"          length as short,",
+				"          replacement_cost as double,",
+				"          rating as string,",
+				"          special_features as string,",
 				"          last_update as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> SourceFilmCategory",
-				"SourceFilmCategory select(mapColumn(",
+				"     ignoreNoFilesFound: false) ~> SourceFilm",
+				"SourceFilm select(mapColumn(",
 				"          film_id,",
-				"          category_id",
+				"          title,",
+				"          release_year,",
+				"          rental_rate,",
+				"          rating",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
@@ -48,7 +61,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> OutputFilmCategory"
+				"     skipDuplicateMapOutputs: true) ~> OutputFilm"
 			]
 		}
 	}
