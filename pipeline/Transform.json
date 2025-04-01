@@ -199,7 +199,17 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow_film_category",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"SourceFilmCategory": {
+								"Tabla": "film_category",
+								"idFecha": "@pipeline().parameters.idFecha"
+							},
+							"OutputFilmCategory": {
+								"Tabla": "film_category",
+								"idFecha": "@pipeline().parameters.idFecha"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
